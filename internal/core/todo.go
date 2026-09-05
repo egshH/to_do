@@ -1,6 +1,9 @@
 package core
 
-import "fmt"
+import (
+	"fmt"
+	"slices"
+)
 
 type task struct {
 	title     string
@@ -14,7 +17,7 @@ func NewTask(title string) error {
 		return fmt.Errorf("описание должно быть заполнено!")
 	}
 
-	t := &task{ 
+	t := &task{
 		title:     title,
 		completed: false,
 	}
@@ -63,6 +66,30 @@ func ComleteTask(id int) error {
 		return fmt.Errorf("задачи под номером: %d не существует", id)
 	} else {
 		t.completed = true
+		//reindexTask()
 		return nil
+	}
+}
+
+func PrintTasks() {
+	keys := make([]int, 0, len(listOfTasks))
+
+	for k := range listOfTasks {
+		keys = append(keys, k)
+	}
+
+	slices.Sort(keys)
+
+	for _, k := range keys {
+		t := listOfTasks[k]
+		checkbox := ""
+
+		switch t.completed {
+		case true:
+			checkbox = "[X]"
+		case false:
+			checkbox = fmt.Sprintf("[%d]", k)
+		}
+		fmt.Printf("%s - %s\n", checkbox, t.title)
 	}
 }
