@@ -12,9 +12,9 @@ type task struct {
 
 var listOfTasks map[int]*task = make(map[int]*task)
 
-func NewTask(title string) error {
+func newTask(title string) error {
 	if title == "" {
-		return fmt.Errorf("описание должно быть заполнено!")
+		return fmt.Errorf("title must be filled")
 	}
 
 	t := &task{
@@ -29,10 +29,13 @@ func NewTask(title string) error {
 	return nil
 }
 
-func ChangeTask(id int, title string) error {
+func changeTask(id int, title string) error {
 	if t, ok := listOfTasks[id]; !ok {
-		return fmt.Errorf("задачи под номером: %d не существует", id)
+		return fmt.Errorf("task with number: %d is not exist", id)
 	} else {
+		if title == "" {
+			return fmt.Errorf("title is not provided")
+		}
 		t.title = title
 		return nil
 	}
@@ -51,9 +54,9 @@ func reindexTask() {
 	listOfTasks = tmp
 }
 
-func DeleteTask(id int) error {
+func deleteTask(id int) error {
 	if _, ok := listOfTasks[id]; !ok {
-		return fmt.Errorf("задачи под номером: %d не существует", id)
+		return fmt.Errorf("task with number: %d is not exist", id)
 	} else {
 		delete(listOfTasks, id)
 		reindexTask()
@@ -61,17 +64,16 @@ func DeleteTask(id int) error {
 	}
 }
 
-func ComleteTask(id int) error {
+func comleteTask(id int) error {
 	if t, ok := listOfTasks[id]; !ok {
-		return fmt.Errorf("задачи под номером: %d не существует", id)
+		return fmt.Errorf("task with number: %d is not exist", id)
 	} else {
 		t.completed = true
-		//reindexTask()
 		return nil
 	}
 }
 
-func PrintTasks() {
+func printTasks() {
 	keys := make([]int, 0, len(listOfTasks))
 
 	for k := range listOfTasks {
