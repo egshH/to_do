@@ -7,9 +7,19 @@ import (
 )
 
 func main() {
-	args := os.Args
-	err := core.Parse(args)
+	err := core.LoadTask()
 	if err != nil {
-		fmt.Print(err)
+		panic(err)
+	}
+
+	args := os.Args
+	err = core.Parse(args)
+	if err != nil {
+		fmt.Printf("Error %s", err)
+	}
+
+	err = core.SaveTask()
+	if err != nil {
+		panic(err)
 	}
 }
