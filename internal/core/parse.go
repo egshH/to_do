@@ -10,6 +10,19 @@ func Parse(args []string) error {
 		return fmt.Errorf("command is not provided")
 	}
 
+	if len(args) == 2 {
+		switch args[1] {
+		case "init":
+			return _init()
+		case "dismiss":
+			return _dismiss()
+		}
+	}
+
+	if !isInit() {
+		return fmt.Errorf("to_do isnt initialized")
+	}
+
 	switch args[1] {
 	case "print":
 		if len(args) != 2 {

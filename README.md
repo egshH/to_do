@@ -5,3 +5,5 @@
 3. `to_do change <id> "title"` - change title in task with [id]
 4. `to_do delete <id>` - delete task with [id]
 5. `to_do complete <id>` - task is marked as "comleted"
+6. `to_do init` - initialization "to_do" in project
+7. `to_do dismiss` - remove "to_do" from project

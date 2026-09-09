@@ -6,8 +6,8 @@ import (
 )
 
 type task struct {
-	title     string
-	completed bool
+	Title     string `json:"title"`
+	Completed bool   `json:"completed"`
 }
 
 var listOfTasks map[int]*task = make(map[int]*task)
@@ -18,8 +18,8 @@ func newTask(title string) error {
 	}
 
 	t := &task{
-		title:     title,
-		completed: false,
+		Title:     title,
+		Completed: false,
 	}
 
 	id := len(listOfTasks) + 1
@@ -36,7 +36,7 @@ func changeTask(id int, title string) error {
 		if title == "" {
 			return fmt.Errorf("title is not provided")
 		}
-		t.title = title
+		t.Title = title
 		return nil
 	}
 }
@@ -68,12 +68,16 @@ func comleteTask(id int) error {
 	if t, ok := listOfTasks[id]; !ok {
 		return fmt.Errorf("task with number: %d is not exist", id)
 	} else {
-		t.completed = true
+		t.Completed = true
 		return nil
 	}
 }
 
 func printTasks() {
+	if len(listOfTasks) == 0 {
+		fmt.Print("No tasks found")
+		return
+	}
 	keys := make([]int, 0, len(listOfTasks))
 
 	for k := range listOfTasks {
@@ -86,12 +90,12 @@ func printTasks() {
 		t := listOfTasks[k]
 		checkbox := ""
 
-		switch t.completed {
+		switch t.Completed {
 		case true:
 			checkbox = "[X]"
 		case false:
 			checkbox = fmt.Sprintf("[%d]", k)
 		}
-		fmt.Printf("%s - %s\n", checkbox, t.title)
+		fmt.Printf("%s - %s\n", checkbox, t.Title)
 	}
 }

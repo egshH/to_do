@@ -8,20 +8,24 @@ import (
 const fileName = "tasks.json"
 
 func SaveTask() error {
+	if !isInit() {
+		return nil
+	}
+
 	//createIfNotExist()
 	jsonTask, err := json.Marshal(listOfTasks)
 	if err != nil {
 		return err
 	}
-	
+
 	// err = os.WriteFile(fileName, jsonTask, 0644)
 	// return err
 	return os.WriteFile(fileName, jsonTask, 0644)
 }
 
 func LoadTask() error {
-	if err := createIfNotExist(); err != nil {
-		return err
+	if !isInit() {
+		return nil
 	}
 
 	jsonTask, err := os.ReadFile(fileName)
@@ -46,12 +50,17 @@ func LoadTask() error {
 	return nil
 }
 
-func createIfNotExist() error {
-	_, err := os.Stat(fileName)
-	if err != nil {
-		_, a := os.Create(fileName)
+func _init() error {
+	_, a := os.Create(fileName)
 
-		return a
-	}
-	return nil
+	return a
+}
+
+func isInit() bool {
+	_, err := os.Stat(fileName)
+	return err == nil
+}
+
+func _dismiss() error {
+	return os.Remove(fileName)
 }
